@@ -1,0 +1,22 @@
+{
+  "name": "evaluacion_docente_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Código.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lfcruzUDES/evaluacion_docente_app.git"
+  },
+  "author": "Luis Fernando Cruz Carrillo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lfcruzUDES/evaluacion_docente_app/issues"
+  },
+  "homepage": "https://github.com/lfcruzUDES/evaluacion_docente_app#readme",
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.14"
+  }
+}
