@@ -6,8 +6,6 @@ namespace ROUTER {
     type url_param = {
         parameter: {
             path: string,
-            ssid: string,
-            crid: string,
         }
     }
 

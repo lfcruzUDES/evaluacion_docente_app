@@ -15,7 +15,7 @@ namespace URL_PATHS {
      * ['Patrón', 'Plantilla', Función a ejecutar al encontrar el patrón]
      */
     export let url_patterns: path[] = [
-        ['', 'templates/index', VIEWS.IndexView],
+        ['', VIEWS.IndexView],
     ];
 
 }

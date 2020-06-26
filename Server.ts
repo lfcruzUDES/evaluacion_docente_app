@@ -10,6 +10,16 @@ type url_param = {
     }
 }
 
+
+// Contexto de la aplicación.
+let CONTEXT = {
+    error: '',
+    user_email: '',
+    form_sheet: '',
+    form_app: '',
+}
+
+
 function doGet(e: url_param): any {
     // Sirve las páginas.
     CONTEXT['path'] = e.parameter.path
@@ -17,6 +27,7 @@ function doGet(e: url_param): any {
     let output = path[1](e);
     return output;
 }
+
 
 function doPost(e: url_param): any {
     // Sirve las páginas.
@@ -63,14 +74,6 @@ function urlApp(path?: string) {
     }
 
     return path ? `${url}?path=${path}` : url;
-}
-
-// Contexto de la aplicación.
-let CONTEXT = {
-    error: '',
-    user_email: '',
-    form_sheet: '',
-    form_app: '',
 }
 
 

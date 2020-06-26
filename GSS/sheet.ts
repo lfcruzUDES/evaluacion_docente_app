@@ -229,6 +229,8 @@ namespace SHEET {
                     return new this.model(this.sheet, this.cols, i + 1, data);
                 }
             }
+
+            return false;
         }
 
 
