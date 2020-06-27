@@ -75,6 +75,7 @@
     const main = new Vue({
         el: '#main',
         data: {
+            set_as_participation: true,
             response: [
                 { value: '', required: true },
                 { value: '', required: true },
@@ -142,6 +143,7 @@
                         bootbox.alert(`<div class="alert alert-success" role="alert">
                                    Datos guardados, puedes continuar evaluando.
                                     </div>`);
+                        this.set_as_participation = false;
                         window.scroll(0,0);
                         if (this.subjects.length < 1) {
                             window.open('<?!= urlApp("finish") ?>', '_top');
@@ -153,7 +155,7 @@
                                    de UDES Universidad.
                                     </div>`);
                     }
-                }).save_answer(this.response);
+                }).save_answer(this.response, this.set_as_participation);
             } else {
                 bootbox.alert(`<div class="alert alert-warning" role="alert">
                                ¡Ups!, parece que no has llenado todos los campos requeridos.
@@ -161,6 +163,10 @@
             }
         },
 
+        /**
+         * Revisa si ya se contestaron las pregutnas
+         * marcadas como requeridas.
+        */
         questions_answered(){
             let answered = false;
             for (let i = 0; i < this.response.length; i++) {
@@ -189,6 +195,9 @@
             }
         },
 
+        /**
+         * Limpia las respuestas.
+        */
         clear_responses(){
             for (let i = 3; i < this.response.length; i++) {
                 this.response[i].value = '';

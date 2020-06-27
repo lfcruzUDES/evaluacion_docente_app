@@ -2,7 +2,7 @@ namespace SETTINGS {
 
     // APP DATA >>>
 
-    export const DEBUG = true;
+    export const DEBUG = false;
 
     export const APP_NAME = 'Evalauación docente';
 
