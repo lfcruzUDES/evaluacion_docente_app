@@ -44,7 +44,7 @@ namespace FORM_APP {
             if (questions[i].datas.type !== SETTINGS.QUESTION_TYPES.immutable) {
                 let field_type, label;
                 let question_name = `question_${i}`
-                let v_model = `response[${i}]`;
+                let v_model = `response[${i}].value`;
                 let attrs = {}
 
                 if (questions[i].datas.type === 'textarea') {

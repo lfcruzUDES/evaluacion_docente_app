@@ -16,6 +16,7 @@ namespace URL_PATHS {
      */
     export let url_patterns: path[] = [
         ['', VIEWS.IndexView],
+        ['finish', VIEWS.FinishedView],
     ];
 
 }

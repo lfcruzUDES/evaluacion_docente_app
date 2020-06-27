@@ -10,11 +10,12 @@ function save_answer(data: string[]) {
 
 namespace SAVE {
 
-    export function save_data(data: string[]) {
+    export function save_data(data: {}[]) {
         try {
             if (data.length >= 1) {
                 let sheet = SpreadsheetApp.openByUrl(SETTINGS.BOOK).getSheetByName(SETTINGS.RESPONSES);
-                sheet?.appendRow(data);
+                let data_to_save = data.map(el => el.value)
+                sheet?.appendRow(data_to_save);
                 return true
             }
         } catch (error) {
