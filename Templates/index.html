@@ -18,38 +18,47 @@
 
                         <div class="form-group">
                             <label for="">Oferta académica:</label>
-                            <select class="form-control" v-model="response[0]">
-                                <option value=""></option>
+                            <select class="form-control" v-model="response[0]" @change="get_subjects">
+                                <? var careers = FORM_APP.get_academic_offert() ?>
+                                <? for(var c = 0; c < careers.length; c++){ ?>
+                                    <? if(careers[c]){ ?>
+                                        <option value="<?!= careers[c] ?>"><?!= careers[c] ?></option>
+                                    <? } ?>
+                                <? } ?>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Grado:</label>
-                            <select class="form-control" v-model="response[1]">
-                                <option value=""></option>
+                            <select class="form-control" v-model="response[1]" @change="get_subjects">
+                                <option v-for="i in 8" :value="i">{{i}}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Grupo:</label>
-                            <select class="form-control" v-model="response[2]">
-                                <option value=""></option>
+                            <select class="form-control" v-model="response[2]" @change="get_subjects">
+                                <option v-for="i in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'REC']" :value="i">{{i}}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Asignatura:</label>
-                            <select class="form-control" v-model="response[3]">
-                                <option value=""></option>
+                            <select class="form-control" v-model="response[3]" @change="get_teacher">
+                                <option v-for="subject, index in subjects" :value="subject.subject">{{subject.subject}}</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-5">
                             <label for="">Profesor:</label>
-                            <input type="text" class="form-control" v-model="response[4]">
+                            <input type="text" class="form-control" v-model="response[4]" disabled>
+                        </div>
+
+                        <div class="alert alert-primary" role="alert">
+                            EL rango de los siguinetes campos va de 1 a 5, donde 1 significa <b>Mal</b> y 5 <b>Excelente</b>
                         </div>
 
                         <? var data = FORM_APP.create_fields_and_virtual_table() ?>
                         <? var form = FORM_APP.get_form(data) ?>
                         <?!= form.as_p().replace(new RegExp('<p>', 'gi'), '<div class="form-group">').replace(new RegExp('</p>', 'gi'), '</div>') ?>
 
-                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <button type="submit" class="btn btn-udes btn-block mt-5">Enviar</button>
                     </form>
                 </div>
 
@@ -66,22 +75,83 @@
     const main = new Vue({
         el: '#main',
         data: {
-            response:[
+            response: [
                 '',
                 '',
                 '',
                 '',
                 '',
-                <? for(var i = 0; i < data[0].length; i++){ ?>
-                    '1',
+                <? for(var i = 0; i<data[0].length; i++){ ?>
+                    '',
                 <?}?>
-            ]
+            ],
+            subjects: [],
         },
-        methods:{
-            save_data(){
-                console.log(this.response);
+    methods: {
+        save_data(){
+            console.log(this.response);
+        },
+        get_subjects(whereIam){
+            if (this.response[0] && this.response[1] && this.response[2]) {
+                console.log('start')
+
+                bootbox.alert(`<div class="alert alert-info" role="alert">
+                            Recuperando asignaruras de ${this.response[1]}${this.response[2]} de ${this.response[0]}
+                            </div>`);
+                google.script.run.withFailureHandler(e => {
+                    console.log(e);
+                }).withSuccessHandler(subjects => {
+                    this.subjects = subjects;
+                    bootbox.alert(`<div class="alert alert-success" role="alert">
+                                   Asignaturas recuperadas, ya puedes evaluar a tus docentes.
+                                    </div>`);
+                }).search_subject(this.response[0], this.response[1], this.response[2]);
+
             }
-        }
+        },
+        get_teacher(){
+            if (this.response[3]) {
+                let teacher = this.subjects.filter(el => {
+                    return el.subject === this.response[3];
+                });
+                try {
+                    this.response[4] = teacher[0].teacher;
+                } catch (error) {
+                    this.response[4] = '';
+                }
+            }
+        },
+        save_data(){
+            let answered = false;
+            for (let i = 0; i < 5; i++) {
+                answered = this.response[i] ? true : false;
+            }
+            if (answered) {
+                bootbox.alert(`<div class="alert alert-info" role="alert">
+                                   Estoy guardando tu respuestas, espera un momento por favor...
+                                    </div>`);
+                google.script.run.withFailureHandler(e => {
+                    console.log(e);
+                }).withSuccessHandler(saved => {
+                    if (saved) {
+                        bootbox.alert(`<div class="alert alert-success" role="alert">
+                                   Datos guardados, puedes continuar evaluando.
+                                    </div>`);
+                    }else{
+                        bootbox.alert(`<div class="alert alert-danger" role="alert">
+                                   No se pudieron guardar tus respuestas, intenta enviarlas de nuevo,
+                                   si el problema persiste ponte en contacto con el área de soporte
+                                   de UDES Universidad.
+                                    </div>`);
+                    }
+                }).save_answer(this.response);
+            } else {
+                bootbox.alert(`<div class="alert alert-warning" role="alert">
+                               ¡Ups!, parece que no has llenado todos los campos requeridos.
+                                </div>`);
+            }
+        },
+    }
     });
 
 

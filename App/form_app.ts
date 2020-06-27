@@ -42,13 +42,17 @@ namespace FORM_APP {
         for (let i = 0; i < questions.length; i++) {
 
             if (questions[i].datas.type !== SETTINGS.QUESTION_TYPES.immutable) {
-                let field_type;
+                let field_type, label;
                 let question_name = `question_${i}`
+                let v_model = `response[${i}]`;
                 let attrs = {}
+
                 if (questions[i].datas.type === 'textarea') {
+                    label = `${questions[i].datas.question}`
                     field_type = SETTINGS.QUESTION_TYPES[questions[i].datas.type]
                     attrs['rows'] = 3;
                 } else if (questions[i].datas.type === 'range') {
+                    label = `${questions[i].datas.question} <span class="text-info">[{{${v_model}}}]</span>`
                     field_type = SETTINGS.QUESTION_TYPES[questions[i].datas.type]
                     let options = questions[i].datas.options.split('///');
                     let range = options[0].split('-');
@@ -63,8 +67,8 @@ namespace FORM_APP {
                 fields.push(
                     {
                         name: question_name,
-                        label_text: questions[i].datas.question,
-                        attrs: { 'class': 'form-control', 'v-model': `response[${i}]`, ...attrs },
+                        label_text: label,
+                        attrs: { 'class': 'form-control', 'v-model': v_model, ...attrs },
                         make: FIELDS[field_type],
                         required: questions[i].datas.required ? true : false,
                         hidden: false,
@@ -107,5 +111,16 @@ namespace FORM_APP {
         }
 
         return false
+    }
+
+    /**
+     * Obtiene los datos de las carreras.
+     */
+    export function get_academic_offert() {
+        let datas_model = MODELS.DatasModel();
+        let careers = datas_model.col_as_array(5).filter((value, index, self) => {
+            return self.indexOf(value) === index;
+        });
+        return careers.sort();
     }
 }
