@@ -15,8 +15,9 @@ namespace SETTINGS {
     export const NOT_AUTH_PATH = "";
     export const DEFAULT_PATH = "Templates/index"
 
-
-    export const BOOK = 'https://docs.google.com/spreadsheets/d/1JJaxU6BwZ9UVV7HvOmOnK_MUy_QlCcoKuBHyTGLLg0I/edit';
+    // Libro de tests
+    // export const BOOK = 'https://docs.google.com/spreadsheets/d/1JJaxU6BwZ9UVV7HvOmOnK_MUy_QlCcoKuBHyTGLLg0I/edit';
+    export const BOOK = 'https://docs.google.com/spreadsheets/d/1vhAO1kvo-Vi25tsRhhp9VnMfzaNOnVOoxgaDrxHjqDU/edit';
     export const QUESTIONS = 'Preguntas';
     export const DATAS = 'DATOS';
     export const RESPONSES = 'Respuestas';
